@@ -16,6 +16,5 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "18"
-      - run: cd docs
       - run: npm i -g markbind-cli
       - run: markbind deploy --ci
