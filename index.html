@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="generator" content="MarkBind 6.0.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1"><title>ARTC SHAP - Home Page</title> <link rel="stylesheet" href="/markbind/css/bootstrap.min.css"> <link rel="stylesheet" href="/markbind/fontawesome/css/all.min.css"><link rel="stylesheet" href="/markbind/css/codeblock-light.min.css"><link rel="stylesheet" href="/markbind/css/markbind.min.css"><link rel="stylesheet" href="/plugins/markbind-plugin-anchors/markbind-plugin-anchors.css"><link rel="stylesheet" href="/plugins/markbind-plugin-tree/markbind-plugin-tree.css">
+    
+  <link rel="stylesheet" href="/stylesheets/main.css">
+</head>
+<script>
+  const baseUrl = ''
+</script>
+<body  data-bs-spy="scroll" data-bs-target="#mb-page-nav" data-bs-offset="100" >
+<div id="app"><!--[--><header sticky><div data-v-2dc82f13><nav class="navbar navbar-expand-md d-print-none navbar-dark bg-dark" data-v-2dc82f13><div class="container-fluid" data-v-2dc82f13><div class="navbar-left" data-v-2dc82f13><!--[--><a href="/index.html" title="Home" class="navbar-brand">Your Logo</a><!--]--></div><div class="navbar-default" data-v-2dc82f13><ul class="navbar-nav me-auto mt-2 mt-lg-0" data-v-2dc82f13><!--[--> <li><a href="/contents/shap.html" class="nav-link">SHAP</a></li> <li><a href="/contents/userGuide.html" class="nav-link">User Guide</a></li> <li><a href="/contents/developerGuide.html" class="nav-link">Developer Guide</a></li> <!--]--></ul></div><ul class="navbar-nav navbar-right" data-v-2dc82f13><!--[--><li><form class="navbar-form"><div style="position:relative;" class="dropdown" data-v-00e26d0a><!--[--><input value="" data-bs-toggle="dropdown" type="text" class="form-control" placeholder="Search" autocomplete="off" data-v-00e26d0a><div class="form-control placeholder-div-hidden" data-v-00e26d0a>Search</div><!--]--><ul class="dropdown-menu search-dropdown-menu dropdown-menu-hidden dropdown-menu-end" data-v-00e26d0a><!--[--><!--]--></ul></div></form></li><!--]--></ul></div></nav><div style="display:none;" class="lower-navbar-container" data-v-2dc82f13><!--[--><!----><!----><!--]--></div></div></header> <div id="flex-body"><nav id="site-nav" data-v-6b1b63d2><!--[--><div class="site-nav-top"><div class="fw-bold mb-2" style="font-size:1.25rem;">Contents</div></div> <div class="nav-component slim-scroll"><div class="site-nav-root"><!--[--><ul class="site-nav-list site-nav-list-root" data-v-6b1b63d2><!--[--><li><div class="site-nav-default-list-item site-nav-list-item-0" onclick="handleSiteNavClick(this)"><a href="/index.html">Home 🏠</a></div></li> <li><div class="site-nav-default-list-item site-nav-list-item-0" onclick="handleSiteNavClick(this)"><a href="/contents/shap.html">SHAP</a></div></li> <li><div class="site-nav-default-list-item site-nav-list-item-0" onclick="handleSiteNavClick(this)"><a href="/contents/userGuide.html">User Guide</a></div></li> <li><div class="site-nav-default-list-item site-nav-list-item-0" onclick="handleSiteNavClick(this)"><a href="/contents/developerGuide.html">Developer Guide</a></div></li><!--]--><!--v-if--></ul><!--]--></div></div><!--]--><!--v-if--></nav> <div id="content-wrapper"><div data-v-ef898034><nav aria-label="breadcrumb" class="breadcrumb-divider" data-v-ef898034><ol class="breadcrumb" data-v-ef898034><li class="notlink breadcrumb-marker" data-v-ef898034> ››   </li><!--[--><!--]--></ol></nav></div> <br> <h1 id="project-introduction">Project Introduction<a class="fa fa-anchor" href="#project-introduction" onclick="event.stopPropagation()"></a></h1> <p>Black box models have achieved remarkable predictive performance but are difficult for users and stakeholders to trust, audit, or understand their decisions.</p> <p>SHAP (SHapley Additive exPlanations) provides a unified, game-theoretic approach to interpreting the output of machine learning models.</p> <p>While there exists SHAP libraries, internal literature review has shown it to be overly complex for development with Nixtla time series forecasting models.</p> <h2 id="project-objective">Project Objective<a class="fa fa-anchor" href="#project-objective" onclick="event.stopPropagation()"></a></h2> <p>This project implements a lightweight and efficient <strong>Naive SHAP framework</strong> tailored for:</p> <ul><li><strong>MLForecast</strong> models</li> <li><strong>NeuralForecast</strong> models</li></ul> <p>It enables users to:</p> <ul><li>Compute approximate SHAP values using a simple leave-one-out methodology</li> <li>Visualize feature attributions with <strong>beeswarm</strong> and <strong>waterfall</strong> plots</li> <li>Support both tabular and time-series explainability out-of-the-box</li></ul> <h2 id="project-results">Project Results<a class="fa fa-anchor" href="#project-results" onclick="event.stopPropagation()"></a></h2> <p>A demo run can be found in <code class="line-numbers hljs inline no-lang">main.py</code>.</p> <p>The demo run uses a synthetic time series dataset consisting of two exogenous features: <code class="line-numbers hljs inline no-lang">lag1</code> and <code class="line-numbers hljs inline no-lang">dayofweek</code>. A <code class="line-numbers hljs inline no-lang">Neuralforecast</code> and <code class="line-numbers hljs inline no-lang">Statsforecast</code> models have been trained
+using this data. A forecast of 12 weeks have been made using each of these models.</p> <p>The <code class="line-numbers hljs inline no-lang">NaiveShap</code> class have been applied to both these models for explanability of the 12 week forecast.</p> <p>A summary of all SHAP results, a visualisation of this in a beeswarm plot, a point SHAP value and a visualisation of this in a waterfall plot.</p> <h4 id="summary-table">Summary Table<a class="fa fa-anchor" href="#summary-table" onclick="event.stopPropagation()"></a></h4> <p>Summary table for Statsforecast:</p> <div class="table-responsive"><table class="markbind-table table table-bordered table-striped"><thead><tr><th style="text-align:right;">lag1</th> <th style="text-align:right;">dayofweek</th> <th style="text-align:right;">expected_value</th> <th style="text-align:right;">model_output</th></tr></thead> <tbody><tr><td style="text-align:right;">1.09157</td> <td style="text-align:right;">-0.690336</td> <td style="text-align:right;">3.20664</td> <td style="text-align:right;">3.60788</td></tr> <tr><td style="text-align:right;">-0.903754</td> <td style="text-align:right;">-1.0217</td> <td style="text-align:right;">3.20664</td> <td style="text-align:right;">1.28119</td></tr> <tr><td style="text-align:right;">-0.580055</td> <td style="text-align:right;">0.966471</td> <td style="text-align:right;">3.20664</td> <td style="text-align:right;">3.59306</td></tr> <tr><td style="text-align:right;">-0.180767</td> <td style="text-align:right;">0.635109</td> <td style="text-align:right;">3.20664</td> <td style="text-align:right;">3.66098</td></tr> <tr><td style="text-align:right;">0.019789</td> <td style="text-align:right;">0.303748</td> <td style="text-align:right;">3.20664</td> <td style="text-align:right;">3.53018</td></tr> <tr><td style="text-align:right;">0.360676</td> <td style="text-align:right;">-0.027613</td> <td style="text-align:right;">3.20664</td> <td style="text-align:right;">3.5397</td></tr> <tr><td style="text-align:right;">0.792873</td> <td style="text-align:right;">-0.358975</td> <td style="text-align:right;">3.20664</td> <td style="text-align:right;">3.64054</td></tr> <tr><td style="text-align:right;">1.12249</td> <td style="text-align:right;">-0.690336</td> <td style="text-align:right;">3.20664</td> <td style="text-align:right;">3.63879</td></tr> <tr><td style="text-align:right;">-0.875028</td> <td style="text-align:right;">-1.0217</td> <td style="text-align:right;">3.20664</td> <td style="text-align:right;">1.30991</td></tr> <tr><td style="text-align:right;">-0.601455</td> <td style="text-align:right;">0.966471</td> <td style="text-align:right;">3.20664</td> <td style="text-align:right;">3.57166</td></tr> <tr><td style="text-align:right;">-0.24378</td> <td style="text-align:right;">0.635109</td> <td style="text-align:right;">3.20664</td> <td style="text-align:right;">3.59797</td></tr> <tr><td style="text-align:right;">-0.002562</td> <td style="text-align:right;">0.303748</td> <td style="text-align:right;">3.20664</td> <td style="text-align:right;">3.50783</td></tr></tbody></table></div><p>Summary table for Neuralforecast:</p> <div class="table-responsive"><table class="markbind-table table table-bordered table-striped"><thead><tr><th style="text-align:right;">lag1</th> <th style="text-align:right;">dayofweek</th> <th style="text-align:right;">expected_value</th> <th style="text-align:right;">model_output</th></tr></thead> <tbody><tr><td style="text-align:right;">2.68699</td> <td style="text-align:right;">-0.371672</td> <td style="text-align:right;">6.61011</td> <td style="text-align:right;">8.92543</td></tr> <tr><td style="text-align:right;">0.953304</td> <td style="text-align:right;">0.923213</td> <td style="text-align:right;">6.61011</td> <td style="text-align:right;">8.48663</td></tr> <tr><td style="text-align:right;">0.280486</td> <td style="text-align:right;">0.285348</td> <td style="text-align:right;">6.61011</td> <td style="text-align:right;">7.17594</td></tr> <tr><td style="text-align:right;">-0.358947</td> <td style="text-align:right;">-0.36155</td> <td style="text-align:right;">6.61011</td> <td style="text-align:right;">5.88961</td></tr> <tr><td style="text-align:right;">-0.617479</td> <td style="text-align:right;">-0.617519</td> <td style="text-align:right;">6.61011</td> <td style="text-align:right;">5.37511</td></tr> <tr><td style="text-align:right;">-0.604425</td> <td style="text-align:right;">-0.608278</td> <td style="text-align:right;">6.61011</td> <td style="text-align:right;">5.39741</td></tr> <tr><td style="text-align:right;">-0.008786</td> <td style="text-align:right;">-0.00883</td> <td style="text-align:right;">6.61011</td> <td style="text-align:right;">6.59249</td></tr> <tr><td style="text-align:right;">0.234525</td> <td style="text-align:right;">0.23445</td> <td style="text-align:right;">6.61011</td> <td style="text-align:right;">7.07908</td></tr> <tr><td style="text-align:right;">0.115354</td> <td style="text-align:right;">0.112267</td> <td style="text-align:right;">6.61011</td> <td style="text-align:right;">6.83773</td></tr> <tr><td style="text-align:right;">-0.072381</td> <td style="text-align:right;">-0.071341</td> <td style="text-align:right;">6.61011</td> <td style="text-align:right;">6.46639</td></tr> <tr><td style="text-align:right;">-0.436153</td> <td style="text-align:right;">-0.438409</td> <td style="text-align:right;">6.61011</td> <td style="text-align:right;">5.73555</td></tr> <tr><td style="text-align:right;">-0.623792</td> <td style="text-align:right;">-0.626381</td> <td style="text-align:right;">6.61011</td> <td style="text-align:right;">5.35994</td></tr></tbody></table></div><h4 id="beeswarm-plot">Beeswarm plot<a class="fa fa-anchor" href="#beeswarm-plot" onclick="event.stopPropagation()"></a></h4> <p>Beeswarm plot for Statsforecast
+<a href="/src/sf_beeswarm.png" target="_self"><img src="/src/sf_beeswarm.png" alt="Beeswarm plot for Statsforecast" class="img-fluid"></a></p> <p>Beeswarm plot for Neuralforecast
+<a href="/src/nf_beeswarm.png" target="_self"><img src="/src/nf_beeswarm.png" alt="Beeswarm plot for Neuralforecast" class="img-fluid"></a></p> <h4 id="point-shap-value">Point SHAP value<a class="fa fa-anchor" href="#point-shap-value" onclick="event.stopPropagation()"></a></h4> <p>Point table for Statsforecast:</p> <div class="table-responsive"><table class="markbind-table table table-bordered table-striped"><thead><tr><th style="text-align:right;">lag1</th> <th style="text-align:right;">dayofweek</th></tr></thead> <tbody><tr><td style="text-align:right;">-0.580055</td> <td style="text-align:right;">0.966471</td></tr></tbody></table></div><p>Point table for Neuralforecast:</p> <div class="table-responsive"><table class="markbind-table table table-bordered table-striped"><thead><tr><th style="text-align:right;">lag1</th> <th style="text-align:right;">dayofweek</th></tr></thead> <tbody><tr><td style="text-align:right;">0.280486</td> <td style="text-align:right;">0.285348</td></tr></tbody></table></div><h4 id="waterfall-plot">Waterfall Plot<a class="fa fa-anchor" href="#waterfall-plot" onclick="event.stopPropagation()"></a></h4> <p>Waterfall plot for Statsforecast
+<a href="/src/sf_waterfall.png" target="_self"><img src="/src/sf_waterfall.png" alt="Waterfall plot for Statsforecast" class="img-fluid"></a></p> <p>Waterfall plot for Neuralforecast
+<a href="/src/nf_waterfall.png" target="_self"><img src="/src/nf_waterfall.png" alt="Waterfall plot for Neuralforecast" class="img-fluid"></a></p> <h2 id="benchmark-testing">Benchmark Testing<a class="fa fa-anchor" href="#benchmark-testing" onclick="event.stopPropagation()"></a></h2> <p>The internal SHAP implementation has been benchmarked against the <a href="https://shap.readthedocs.io/en/latest/">standard SHAP library</a>. The preparation for the test follows the procedure outlined in the <a href="https://nixtlaverse.nixtla.io/mlforecast/docs/how-to-guides/analyzing_models.html">Nixtla documentation</a>.</p> <p>Using a paired t-test, and assuming an alternate hypothesis that the SHAP values output by the internal implementation is different from the standard SHAP implementation, we find a p-value of <strong>0.9264</strong>. We do not reject the null hypothesis at 1% significance level.</p> <p>The test may be run from the root of the folder using the following command:</p> <pre><code class="line-numbers hljs"><span>python -m unittest
+</span></code></pre><h2 id="future-work">Future Work<a class="fa fa-anchor" href="#future-work" onclick="event.stopPropagation()"></a></h2> <ul><li>Integrate faster approximation methods (e.g., KernelSHAP-like sampling)</li> <li>SHAP for multi-output models</li></ul></div> <nav id="page-nav" data-v-6b1b63d2><!--[--><div class="nav-component slim-scroll"><a class="navbar-brand page-nav-title" href="#">Topics</a> <nav id="mb-page-nav" class="nav nav-pills flex-column my-0 small no-flex-wrap" data-v-6b1b63d2><!--[--><a class="nav-link py-1" href="#project-introduction">Project Introduction‎</a> <nav class="nav nav-pills flex-column my-0 nested no-flex-wrap"><a class="nav-link py-1" href="#project-objective">Project Objective‎</a> <a class="nav-link py-1" href="#project-results">Project Results‎</a> <nav class="nav nav-pills flex-column my-0 nested no-flex-wrap"><a class="nav-link py-1" href="#summary-table">Summary Table‎</a> <a class="nav-link py-1" href="#beeswarm-plot">Beeswarm plot‎</a> <a class="nav-link py-1" href="#point-shap-value">Point SHAP value‎</a> <a class="nav-link py-1" href="#waterfall-plot">Waterfall Plot‎</a></nav> <a class="nav-link py-1" href="#benchmark-testing">Benchmark Testing‎</a> <a class="nav-link py-1" href="#future-work">Future Work‎</a></nav><!--]--><!--v-if--></nav></div><!--]--><!--v-if--></nav> <div class="scroll-top-button fa-lg d-print-none" style="display:none;bottom:2%;right:2%;position:fixed;" aria-hidden="true"><!--[--><i class="fas fa-arrow-circle-up"></i><!--]--></div></div> <footer><div class="text-center"><small>[Generated by <a href="https://markbind.org/">MarkBind 6.0.0</a>]</small></div></footer><!--]--></div>
+</body><script src="/markbind/js/bootstrap-utility.min.js"></script>
+<script src="/markbind/js/polyfill.min.js"></script>
+<script src="/markbind/js/vue.global.prod.min.js"></script>
+<script src="/markbind/js/markbind.min.js"></script>
+<script src="index.page-vue-render.js"></script>
+<script>
+  MarkBind.setupWithSearch()
+</script>
+    <script type="module">
+    window.mermaidPromise = null;
+    
+    const loadMermaid = () => {
+      if (window.mermaidPromise === null) {
+        window.mermaidPromise = import('https://unpkg.com/mermaid@10/dist/mermaid.esm.min.mjs')
+          .then(({ default: mermaid }) => {
+            mermaid.initialize({
+              startOnLoad: false,
+            });
+            console.log('Mermaid loaded successfully');
+            return mermaid;
+          })
+          .catch((error) => {
+            console.error('Mermaid failed to load:', error);
+            window.mermaidPromise = false;
+            return null;
+          });
+      }
+      return window.mermaidPromise;
+    };
+
+    const renderMermaidDiagrams = (elements) => {
+      if (!elements || elements.length === 0) {
+        return Promise.resolve();
+      }
+
+      return loadMermaid().then(mermaid => {
+        if (!mermaid) return;
+        return mermaid.run({ nodes: Array.from(elements) })
+          .catch(err => console.error('Error rendering mermaid diagrams:', err));
+      });
+    };
+
+    const setupMermaidObserver = () => {
+      const observer = new MutationObserver((mutations) => {
+        let newMermaidElements = [];
+        
+        mutations.forEach(mutation => {
+          if (mutation.addedNodes.length) {
+            mutation.addedNodes.forEach(node => {
+              if (node.nodeType === 1 && node.classList && 
+                  node.classList.contains('mermaid')) {
+                newMermaidElements.push(node);
+              }
+              
+              if (node.nodeType === 1 && node.querySelectorAll) {
+                const mermaidInNode = node.querySelectorAll('.mermaid');
+                if (mermaidInNode.length) {
+                  newMermaidElements = [...newMermaidElements, ...mermaidInNode];
+                }
+              }
+            });
+          }
+        });
+        
+        if (newMermaidElements.length > 0) {
+          renderMermaidDiagrams(newMermaidElements);
+        }
+      });
+      
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+      
+      return observer;
+    };
+
+    // Initialize on DOM content loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      const existingDiagrams = document.querySelectorAll('.mermaid');
+      if (existingDiagrams.length > 0) {
+        renderMermaidDiagrams(existingDiagrams);
+      }
+      
+      setupMermaidObserver();
+    });
+
+  </script>
+</html>

@@ -1,0 +1,64 @@
+{
+  "enableSearch": true,
+  "pages": [
+    {
+      "src": "404.md",
+      "title": "Page not found",
+      "headings": {},
+      "headingKeywords": {}
+    },
+    {
+      "src": "contents/developerGuide.md",
+      "title": "User Guide",
+      "headings": {
+        "class-diagram": "Class Diagram",
+        "sequence-diagram": "Sequence Diagram"
+      },
+      "headingKeywords": {}
+    },
+    {
+      "src": "contents/shap.md",
+      "title": "User Guide",
+      "headings": {
+        "1-introduction": "1 Introduction",
+        "2-theoretical-foundations": "2 Theoretical Foundations",
+        "2-1-shapley-values-from-game-theory-to-machine-learning": "2.1 Shapley Values: From Game Theory to Machine Learning",
+        "2-2-shap-s-additive-property": "2.2 SHAP’s Additive Property",
+        "3-shap-estimation-methods": "3 SHAP Estimation Methods",
+        "4-shap-in-practice": "4 SHAP in Practice",
+        "4-1-local-vs-global-interpretability": "4.1 Local vs. Global Interpretability",
+        "4-2-visualization-tools": "4.2 Visualization Tools",
+        "4-3-types-of-shap": "4.3 Types of SHAP",
+        "5-advantages-and-limitations": "5 Advantages and Limitations",
+        "5-1-advantages": "5.1 Advantages",
+        "5-2-limitations": "5.2 Limitations",
+        "6-conclusion": "6 Conclusion"
+      },
+      "headingKeywords": {}
+    },
+    {
+      "src": "contents/userGuide.md",
+      "title": "User Guide",
+      "headings": {
+        "naiveshap-class-documentation": "NaiveSHAP Class Documentation",
+        "overview": "Overview",
+        "constructor-function Object() { [native code] }": "Constructor",
+        "methods": "Methods",
+        "notes": "Notes"
+      },
+      "headingKeywords": {}
+    },
+    {
+      "src": "index.md",
+      "title": "Home Page",
+      "headings": {
+        "project-introduction": "Project Introduction",
+        "project-objective": "Project Objective",
+        "project-results": "Project Results",
+        "benchmark-testing": "Benchmark Testing",
+        "future-work": "Future Work"
+      },
+      "headingKeywords": {}
+    }
+  ]
+}

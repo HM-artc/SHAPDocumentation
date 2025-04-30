@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="generator" content="MarkBind 6.0.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1"><title>ARTC SHAP - User Guide</title> <link rel="stylesheet" href="/markbind/css/bootstrap.min.css"> <link rel="stylesheet" href="/markbind/fontawesome/css/all.min.css"><link rel="stylesheet" href="/markbind/css/codeblock-light.min.css"><link rel="stylesheet" href="/markbind/css/markbind.min.css"><link rel="stylesheet" href="/plugins/markbind-plugin-anchors/markbind-plugin-anchors.css"><link rel="stylesheet" href="/plugins/markbind-plugin-tree/markbind-plugin-tree.css">
+    
+  <link rel="stylesheet" href="/stylesheets/main.css">
+</head>
+<script>
+  const baseUrl = ''
+</script>
+<body  data-bs-spy="scroll" data-bs-target="#mb-page-nav" data-bs-offset="100" >
+<div id="app"><!--[--><header sticky><div data-v-2dc82f13><nav class="navbar navbar-expand-md d-print-none navbar-dark bg-dark" data-v-2dc82f13><div class="container-fluid" data-v-2dc82f13><div class="navbar-left" data-v-2dc82f13><!--[--><a href="/index.html" title="Home" class="navbar-brand">Your Logo</a><!--]--></div><div class="navbar-default" data-v-2dc82f13><ul class="navbar-nav me-auto mt-2 mt-lg-0" data-v-2dc82f13><!--[--> <li><a href="/contents/shap.html" class="nav-link">SHAP</a></li> <li><a href="/contents/userGuide.html" class="nav-link">User Guide</a></li> <li><a href="/contents/developerGuide.html" class="nav-link">Developer Guide</a></li> <!--]--></ul></div><ul class="navbar-nav navbar-right" data-v-2dc82f13><!--[--><li><form class="navbar-form"><div style="position:relative;" class="dropdown" data-v-00e26d0a><!--[--><input value="" data-bs-toggle="dropdown" type="text" class="form-control" placeholder="Search" autocomplete="off" data-v-00e26d0a><div class="form-control placeholder-div-hidden" data-v-00e26d0a>Search</div><!--]--><ul class="dropdown-menu search-dropdown-menu dropdown-menu-hidden dropdown-menu-end" data-v-00e26d0a><!--[--><!--]--></ul></div></form></li><!--]--></ul></div></nav><div style="display:none;" class="lower-navbar-container" data-v-2dc82f13><!--[--><!----><!----><!--]--></div></div></header> <div id="flex-body"><nav id="site-nav" data-v-6b1b63d2><!--[--><div class="site-nav-top"><div class="fw-bold mb-2" style="font-size:1.25rem;">Contents</div></div> <div class="nav-component slim-scroll"><div class="site-nav-root"><!--[--><ul class="site-nav-list site-nav-list-root" data-v-6b1b63d2><!--[--><li><div class="site-nav-default-list-item site-nav-list-item-0" onclick="handleSiteNavClick(this)"><a href="/index.html">Home 🏠</a></div></li> <li><div class="site-nav-default-list-item site-nav-list-item-0" onclick="handleSiteNavClick(this)"><a href="/contents/shap.html">SHAP</a></div></li> <li><div class="site-nav-default-list-item site-nav-list-item-0" onclick="handleSiteNavClick(this)"><a href="/contents/userGuide.html">User Guide</a></div></li> <li><div class="site-nav-default-list-item site-nav-list-item-0" onclick="handleSiteNavClick(this)"><a href="/contents/developerGuide.html">Developer Guide</a></div></li><!--]--><!--v-if--></ul><!--]--></div></div><!--]--><!--v-if--></nav> <div id="content-wrapper"><div data-v-ef898034><nav aria-label="breadcrumb" class="breadcrumb-divider" data-v-ef898034><ol class="breadcrumb" data-v-ef898034><li class="notlink breadcrumb-marker" data-v-ef898034> ››   </li><!--[--><!--]--></ol></nav></div> <h1 id="naiveshap-class-documentation">NaiveSHAP Class Documentation<a class="fa fa-anchor" href="#naiveshap-class-documentation" onclick="event.stopPropagation()"></a></h1> <h2 id="overview">Overview<a class="fa fa-anchor" href="#overview" onclick="event.stopPropagation()"></a></h2> <p>The <code class="line-numbers hljs inline no-lang">NaiveSHAP</code> class provides a simple, efficient approach to approximating SHAP (SHapley Additive exPlanations) values for any MLForecast or NeuralForecast forecaster. It supports local explanations, feature attribution, and visualizations.</p> <hr> <h2 id="constructor-function Object() { [native code] }">Constructor<a class="fa fa-anchor" href="#constructor-function Object() { [native code] }" onclick="event.stopPropagation()"></a></h2> <p><code class="line-numbers hljs inline no-lang">NaiveSHAP(forecaster, background_data, futr_exog_list, futr_exogenous_data=None, model_key=None, model_idx=None)</code></p> <p><strong>Parameters:</strong></p> <ul><li><code class="line-numbers hljs inline no-lang">forecaster</code>: The trained forecasting model (<code class="line-numbers hljs inline no-lang">MLForecast</code> or <code class="line-numbers hljs inline no-lang">NeuralForecast</code> object).</li> <li><code class="line-numbers hljs inline no-lang">background_data</code> (pd.DataFrame): Background dataset to explain over.</li> <li><code class="line-numbers hljs inline no-lang">futr_exog_list</code> (list): List of future exogenous feature names to perturb.</li> <li><code class="line-numbers hljs inline no-lang">model_key</code> (str, optional): Name of the model inside an MLForecast instance.</li> <li><code class="line-numbers hljs inline no-lang">model_idx</code> (int, optional): Index of the model inside a NeuralForecast instance.</li></ul> <p><strong>Description:</strong><br>
+Initializes internal attributes, sets up model-specific prediction handlers, and prepares for SHAP computation.</p> <hr> <h2 id="methods">Methods<a class="fa fa-anchor" href="#methods" onclick="event.stopPropagation()"></a></h2> <p><code class="line-numbers hljs inline no-lang">process_explanation() -&gt; pd.DataFrame</code></p> <p>Computes SHAP values (if not cached) and returns a DataFrame that includes:</p> <ul><li>SHAP values</li> <li>Expected value (baseline prediction)</li> <li>Model outputs for each row</li></ul> <p><code class="line-numbers hljs inline no-lang">explain_single(index: int) -&gt; pd.Series</code></p> <p>Explains a single instance by returning a sorted list of feature contributions.</p> <ul><li><strong>index</strong>: Integer index of the instance to explain.</li></ul> <p>Raises <code class="line-numbers hljs inline no-lang">ValueError</code> if no SHAP values computed yet.<br>
+Raises <code class="line-numbers hljs inline no-lang">IndexError</code> if index is out of range.</p> <p><code class="line-numbers hljs inline no-lang">plot_beeswarm()</code></p> <p>Plots a <strong>beeswarm plot</strong> of feature impacts across all instances.</p> <ul><li>Requires prior computation of SHAP values.</li> <li>Uses the <code class="line-numbers hljs inline no-lang">Plotter.beeswarm</code> method.</li></ul> <p><code class="line-numbers hljs inline no-lang">plot_waterfall(index: int, max_display: int = None)</code></p> <p>Plots a <strong>waterfall plot</strong> for a given instance:</p> <ul><li><strong>index</strong>: Integer index of the instance.</li> <li><strong>max_display</strong> (optional): Maximum number of features to display in the plot.</li> <li>Requires prior computation of SHAP values.</li> <li>Uses the <code class="line-numbers hljs inline no-lang">Plotter.waterfall</code> method.</li></ul> <hr> <h2 id="notes">Notes<a class="fa fa-anchor" href="#notes" onclick="event.stopPropagation()"></a></h2> <ul><li>The method is <em>naive</em> because it uses leave-one-out perturbations without considering feature interactions and uses a brute force method to calculate the SHAP values.</li> <li>Normalization ensures SHAP additivity property is maintained.</li> <li>Works for both MLForecast and NeuralForecast models.</li></ul></div> <nav id="page-nav" data-v-6b1b63d2><!--[--><div class="nav-component slim-scroll"><nav id="mb-page-nav" class="nav nav-pills flex-column my-0 small no-flex-wrap" data-v-6b1b63d2><!--[--><a class="nav-link py-1" href="#naiveshap-class-documentation">NaiveSHAP Class Documentation‎</a> <nav class="nav nav-pills flex-column my-0 nested no-flex-wrap"><a class="nav-link py-1" href="#overview">Overview‎</a> <a class="nav-link py-1" href="#constructor-function Object() { [native code] }">Constructor‎</a> <a class="nav-link py-1" href="#methods">Methods‎</a> <a class="nav-link py-1" href="#notes">Notes‎</a></nav><!--]--><!--v-if--></nav></div><!--]--><!--v-if--></nav> <div class="scroll-top-button fa-lg d-print-none" style="display:none;bottom:2%;right:2%;position:fixed;" aria-hidden="true"><!--[--><i class="fas fa-arrow-circle-up"></i><!--]--></div></div> <footer><div class="text-center"><small>[Generated by <a href="https://markbind.org/">MarkBind 6.0.0</a>]</small></div></footer><!--]--></div>
+</body><script src="/markbind/js/bootstrap-utility.min.js"></script>
+<script src="/markbind/js/polyfill.min.js"></script>
+<script src="/markbind/js/vue.global.prod.min.js"></script>
+<script src="/markbind/js/markbind.min.js"></script>
+<script src="userGuide.page-vue-render.js"></script>
+<script>
+  MarkBind.setupWithSearch()
+</script>
+    <script type="module">
+    window.mermaidPromise = null;
+    
+    const loadMermaid = () => {
+      if (window.mermaidPromise === null) {
+        window.mermaidPromise = import('https://unpkg.com/mermaid@10/dist/mermaid.esm.min.mjs')
+          .then(({ default: mermaid }) => {
+            mermaid.initialize({
+              startOnLoad: false,
+            });
+            console.log('Mermaid loaded successfully');
+            return mermaid;
+          })
+          .catch((error) => {
+            console.error('Mermaid failed to load:', error);
+            window.mermaidPromise = false;
+            return null;
+          });
+      }
+      return window.mermaidPromise;
+    };
+
+    const renderMermaidDiagrams = (elements) => {
+      if (!elements || elements.length === 0) {
+        return Promise.resolve();
+      }
+
+      return loadMermaid().then(mermaid => {
+        if (!mermaid) return;
+        return mermaid.run({ nodes: Array.from(elements) })
+          .catch(err => console.error('Error rendering mermaid diagrams:', err));
+      });
+    };
+
+    const setupMermaidObserver = () => {
+      const observer = new MutationObserver((mutations) => {
+        let newMermaidElements = [];
+        
+        mutations.forEach(mutation => {
+          if (mutation.addedNodes.length) {
+            mutation.addedNodes.forEach(node => {
+              if (node.nodeType === 1 && node.classList && 
+                  node.classList.contains('mermaid')) {
+                newMermaidElements.push(node);
+              }
+              
+              if (node.nodeType === 1 && node.querySelectorAll) {
+                const mermaidInNode = node.querySelectorAll('.mermaid');
+                if (mermaidInNode.length) {
+                  newMermaidElements = [...newMermaidElements, ...mermaidInNode];
+                }
+              }
+            });
+          }
+        });
+        
+        if (newMermaidElements.length > 0) {
+          renderMermaidDiagrams(newMermaidElements);
+        }
+      });
+      
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+      
+      return observer;
+    };
+
+    // Initialize on DOM content loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      const existingDiagrams = document.querySelectorAll('.mermaid');
+      if (existingDiagrams.length > 0) {
+        renderMermaidDiagrams(existingDiagrams);
+      }
+      
+      setupMermaidObserver();
+    });
+
+  </script>
+</html>
