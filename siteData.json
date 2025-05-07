@@ -11,6 +11,7 @@
       "src": "contents/developerGuide.md",
       "title": "User Guide",
       "headings": {
+        "architecture-diagram": "Architecture Diagram",
         "class-diagram": "Class Diagram",
         "sequence-diagram": "Sequence Diagram"
       },
