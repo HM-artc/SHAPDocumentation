@@ -109,7 +109,17 @@ Waterfall plot for Neuralforecast
 
 The internal SHAP implementation has been benchmarked against the [standard SHAP library](https://shap.readthedocs.io/en/latest/). The preparation for the test follows the procedure outlined in the [Nixtla documentation](https://nixtlaverse.nixtla.io/mlforecast/docs/how-to-guides/analyzing_models.html).
 
-Using a paired t-test, and assuming an alternate hypothesis that the SHAP values output by the internal implementation is different from the standard SHAP implementation, we find a p-value of **0.9264**. We do not reject the null hypothesis at 1% significance level.
+Using a paired t-test, and assuming an alternate hypothesis that the SHAP values output by the internal implementation is different from the standard SHAP implementation, we find a p-value as listed in this table:
+
+|               model | p-value |
+| ------------------: | ------: |
+|   Linear Regression |  0.9264 |
+|               Ridge |  0.9264 |
+|               Lasso |  0.9239 |
+| KNeighborsRegressor |  0.6865 |
+|          ElasticNet |  0.9199 |
+
+We do not reject the null hypothesis at 1% significance level.
 
 The test may be run from the root of the folder using the following command:
 
