@@ -6,6 +6,10 @@ pageNav: 3
 
 <br>
 
+# Architecture Diagram
+
+![SHAP Architecture Diagram](../src/shap_architecture.png)
+
 # Class Diagram
 
 <mermaid>
