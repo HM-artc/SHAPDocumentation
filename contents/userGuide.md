@@ -48,6 +48,15 @@ Explains a single instance by returning a sorted list of feature contributions.
 Raises `ValueError` if no SHAP values computed yet.  
 Raises `IndexError` if index is out of range.
 
+`explain_single_detailed(index: int) -> str`
+
+Explains a single instance by returning a sorted list of feature contributions, the expected value by the model and the actual prediction value of chosen point.
+
+- **index**: Integer index of the instance to explain.
+
+Raises `ValueError` if no SHAP values computed yet.  
+Raises `IndexError` if index is out of range.
+
 `plot_beeswarm()`
 
 Plots a **beeswarm plot** of feature impacts across all instances.
