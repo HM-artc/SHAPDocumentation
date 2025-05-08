@@ -45,7 +45,7 @@ class MLForecastGroup {
 +original_output() np.ndarray
 }
 
-class NeuralForecastGroup {
+class NixtlaForecastGroup {
 +predict_fn()
 +expected_value() float
 +original_output() np.ndarray
@@ -61,7 +61,7 @@ class Plotter {
 }
 
 MLForecastGroup --|&gt; ModelGroup
-NeuralForecastGroup --|&gt; ModelGroup
+NixtlaForecastGroup --|&gt; ModelGroup
 ModelGroupFactory ..&gt; ModelGroup
 NaiveSHAP --&gt; ModelGroupFactory
 NaiveSHAP --&gt; Plotter
