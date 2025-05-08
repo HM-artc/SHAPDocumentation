@@ -127,6 +127,19 @@ The test may be run from the root of the folder using the following command:
 python -m unittest
 ```
 
+## Sanity Check
+
+A sanity test of neural forecast has been done. A group of five neural forecast models from **
+Nixtla** are trained on the same dataset. The NaiveSHAP has been used to explain the second data point in the testing dataset. The following table lists the model and the corresponding SHAP values of the given features
+
+|  model |      lag1 | dayofweek |     Expected Value |          Actual Value |
+| -----: | --------: | --------: | -----------------: | --------------------: |
+|  NHITS |  0.289143 |  0.289143 |  6.075912952423096 |     6.654199123382568 |
+| NBEATS | -0.128028 | -0.128028 |  5.472932815551758 |     5.216876983642578 |
+|    RNN | -0.011475 | -0.011475 | 3.1893014907836914 |     3.166351318359375 |
+|    TCN | -0.006551 | -0.006551 | 3.2793445587158203 |    3.2662432193756104 |
+|  BiTCN |  0.002067 |  0.002067 | -0.021012082695961 | -0.016878139227628708 |
+
 ## Future Work
 
 - Integrate faster approximation methods (e.g., KernelSHAP-like sampling)
