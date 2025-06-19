@@ -8,75 +8,128 @@ pageNav: 3
 
 ## Overview
 
-The `NaiveSHAP` class provides a simple, efficient approach to approximating SHAP (SHapley Additive exPlanations) values for any MLForecast or NeuralForecast forecaster. It supports local explanations, feature attribution, and visualizations.
+The `NaiveSHAP` class provides a model-agnostic, brute-force approximation of SHAP (SHapley Additive exPlanations) values for any of the supported forecaster types—**MLForecast**, **StatsForecast**, or **NeuralForecast**—over a fixed test horizon.  
+It computes local feature attributions by perturbing one feature at a time (over all subsets), caches results for efficiency, and offers both **beeswarm** and **waterfall** visualizations via the `Plotter` module.
 
 ---
 
 ## Constructor
 
-`NaiveSHAP(forecaster, background_data, futr_exog_list, futr_exogenous_data=None, model_key=None, model_idx=None)`
+```python
+NaiveSHAP(
+    forecaster: MLForecast | StatsForecast | NeuralForecast,
+    test_data: pd.DataFrame,
+    train_data: pd.DataFrame,
+    futr_exog_list: list[str],
+    context_data: pd.DataFrame = None
+)
+```
 
 **Parameters:**
 
-- `forecaster`: The trained forecasting model (`MLForecast` or `NeuralForecast` object).
-- `background_data` (pd.DataFrame): Background dataset to explain over.
-- `futr_exog_list` (list): List of future exogenous feature names to perturb.
-- `model_key` (str, optional): Name of the model inside an MLForecast instance.
-- `model_idx` (int, optional): Index of the model inside a NeuralForecast instance.
+- **`forecaster`**  
+  A trained forecasting object—one of:
 
-**Description:**  
-Initializes internal attributes, sets up model-specific prediction handlers, and prepares for SHAP computation.
+  - `MLForecast`
+  - `StatsForecast`
+  - `NeuralForecast`
+
+- **`test_data`** (`pd.DataFrame`)  
+  The dataset (with columns `unique_id`, `ds`, and any exogenous features) whose forecasts you wish to explain.
+
+- **`train_data`** (`pd.DataFrame`)  
+  Historical data used to compute per-series averages for feature-value perturbations.
+
+- **`futr_exog_list`** (`list[str]`)  
+  Names of the exogenous feature columns in `test_data` to include in SHAP calculations.
+
+- **`context_data`** (`pd.DataFrame`, optional)  
+  For `NeuralForecast` models only: the rolling historical context required by RNN/TCN-style predictors.
 
 ---
 
-## Methods
+## Public Methods
 
-`process_explanation() -> pd.DataFrame`
+#### `process_explanation() → pd.DataFrame`
 
-Computes SHAP values (if not cached) and returns a DataFrame that includes:
+Compute (or fetch from cache) the full SHAP DataFrame. The returned DataFrame has columns:
 
-- SHAP values
-- Expected value (baseline prediction)
-- Model outputs for each row
+- `unique_id`, `ds`
+- `model`
+- one column per feature in `futr_exog_list` containing the SHAP value φ
+- `model_output` (the actual forecast)
+- `expected_value` (the baseline forecast)
 
-`explain_single(index: int) -> pd.Series`
+```python
+shap_df = explainer.process_explanation()
+```
 
-Explains a single instance by returning a sorted list of feature contributions.
+---
 
-- **index**: Integer index of the instance to explain.
+#### `explain_single(model: str, unique_id: str, ds: pd.Timestamp) → pd.Series`
 
-Raises `ValueError` if no SHAP values computed yet.  
-Raises `IndexError` if index is out of range.
+Fetch the SHAP values for one series-timestamp pair and a specific sub-model:
 
-`explain_single_detailed(index: int) -> str`
+- **`model`**: name of the sub-model within `MLForecast` or the single output channel name for `StatsForecast`/`NeuralForecast`
+- **`unique_id`**: series identifier
+- **`ds`**: timestamp (must match the index in `test_data`)
 
-Explains a single instance by returning a sorted list of feature contributions, the expected value by the model and the actual prediction value of chosen point.
+Returns a `pd.Series` whose index is the feature list and whose values are the φ contributions.
 
-- **index**: Integer index of the instance to explain.
+```python
+phi_series = explainer.explain_single(
+    model="model_name",
+    unique_id="series_1",
+    ds=pd.Timestamp("2025-06-19")
+)
+```
 
-Raises `ValueError` if no SHAP values computed yet.  
-Raises `IndexError` if index is out of range.
+Raises `ValueError` if no cached SHAP values exist or if the specified keys aren’t found.
 
-`plot_beeswarm()`
+---
 
-Plots a **beeswarm plot** of feature impacts across all instances.
+#### `plot_beeswarm()`
 
-- Requires prior computation of SHAP values.
-- Uses the `Plotter.beeswarm` method.
+Draw a SHAP **beeswarm** plot of all instances in the test set:
 
-`plot_waterfall(index: int, max_display: int = None)`
+```python
+explainer.plot_beeswarm()
+```
 
-Plots a **waterfall plot** for a given instance:
+- Requires prior call to `process_explanation()`.
+- Uses `Plotter.beeswarm(shap_long, order)` under the hood.
 
-- **index**: Integer index of the instance.
-- **max_display** (optional): Maximum number of features to display in the plot.
-- Requires prior computation of SHAP values.
-- Uses the `Plotter.waterfall` method.
+---
+
+#### `plot_waterfall(model: str, unique_id: str, ds: pd.Timestamp, max_display: int = None)`
+
+Draw a SHAP **waterfall** for one instance:
+
+- **`model`**: sub-model name
+- **`unique_id`**, **`ds`**: identify the row to explain
+- **`max_display`** (optional): limit to the top K features by absolute φ
+
+```python
+explainer.plot_waterfall(
+    model="model_name",
+    unique_id="series_1",
+    ds=pd.Timestamp("2025-06-19"),
+    max_display=10
+)
+```
+
+- Requires prior call to `process_explanation()`.
+- Uses `Plotter.waterfall(contrib, baseline, actual, title, max_display)` under the hood.
 
 ---
 
 ## Notes
 
-- The method is _naive_ because it uses leave-one-out perturbations without considering feature interactions and uses a brute force method to calculate the SHAP values.
-- Normalization ensures SHAP additivity property is maintained.
-- Works for both MLForecast and NeuralForecast models.
+- This implementation is _naive_ (brute-force): it exhaustively enumerates all subsets of features for each single-feature contribution.
+- Caches the full SHAP DataFrame keyed by a hash of `test_data`, so repeated calls are cheap.
+- Supports multi-model forecasts (e.g.\ ensemble members) transparently.
+- Baseline (`expected_value`) is the model’s forecast when all exogenous features are set to their per-series averages over `train_data`.
+- Ensures the **additivity** property:  
+  \[
+  f(x) = \mathbb{E}[f(X)] + \sum_j \phi_j.
+  \]

@@ -16,88 +16,91 @@ pageNav: 3
 classDiagram
 
 class NaiveSHAP {
-+forecaster
--bg_full
-+feature_names_num
--bg_means_num
-+futr_exog_list
--shap_cache
--model_group
-+predict_fn
-+expected_value
-+original_output
--hash_dataframe(df) str
-+shap_values() pd.DataFrame
++forecaster: MLForecast|StatsForecast|NeuralForecast
++futr_exog_list: list
++predict_fn(data: pd.DataFrame) pd.DataFrame
++expected_value: pd.DataFrame
++original_output: pd.DataFrame
 +process_explanation() pd.DataFrame
-+explain_single(index) pd.Series
++explain_single(model: str, unique_id: str, ds: pd.Timestamp) pd.Series
 +plot_beeswarm()
-+plot_waterfall(index, max_display)
++plot_waterfall(model: str, unique_id: str, ds: pd.Timestamp, max_display int)
+-\_shap_cache: dict
+-\_test_data: pd.DataFrame
+-\_bg_means_num: pd.DataFrame
+-\_model_group: ModelGroup
+-\_hash_dataframe(df: pd.DataFrame): str
+-shap_values(): pd.DataFrame
 }
 
 class ModelGroup {
-+predict_fn()\*
-+expected_value() float\*
-+original_output() np.ndarray\*
++predict_fn(data: pd.DataFrame): pd.DataFrame
++expected_value: pd.DataFrame
++original_output: pd.DataFrame
++sample_data_average: pd.DataFrame
 }
 
-class MLForecastGroup {
-+predict_fn()
-+expected_value() float
-+original_output() np.ndarray
+class MLForecastGroup { +(forecaster: MLForecast, train_data: pd.DataFrame, test_data: pd.DataFrame, feature_names: list)
++predict_fn(data: pd.DataFrame): pd.DataFrame
++expected_value: pd.DataFrame
++original_output: pd.DataFrame
++sample_data_average: pd.DataFrame
 }
 
-class NixtlaForecastGroup {
-+predict_fn()
-+expected_value() float
-+original_output() np.ndarray
+class NixtlaForecastGroup { +(forecaster: NeuralForecast|StatsForecast, test_data: pd.DataFrame, train_data: pd.DataFrame, futr_exog_list: list, context_data: pd.DataFrame=None)
++predict_fn(data: pd.DataFrame): pd.DataFrame
++expected_value: pd.DataFrame
++original_output: pd.DataFrame
++sample_data_average: pd.DataFrame
 }
 
 class ModelGroupFactory {
-+create(forecaster, background_data, feature_names, model_key, model_idx) ModelGroup
++create(forecaster, test_data: pd.DataFrame, train_data: pd.DataFrame, feature_names: list, context_data: pd.DataFrame=None) ModelGroup
 }
 
 class Plotter {
-+beeswarm(shap_df, feature_values, title)
-+waterfall(contrib, baseline, title, max_display)
++beeswarm(shap_long: pd.DataFrame, order: list)
++waterfall(contrib: pd.Series, baseline: float, actual: float, title: str, max_display: int)
 }
 
+NaiveSHAP --> ModelGroupFactory
+NaiveSHAP --> Plotter
 MLForecastGroup --|> ModelGroup
 NixtlaForecastGroup --|> ModelGroup
 ModelGroupFactory ..> ModelGroup
-NaiveSHAP --> ModelGroupFactory
-NaiveSHAP --> Plotter
 </mermaid>
 
 # Sequence Diagram
 
 <mermaid>
-
 sequenceDiagram
-participant User
-participant NaiveSHAP
-participant ModelGroupFactory
-participant ModelGroup
-participant Plotter
+    participant User
+    participant NaiveSHAP
+    participant ModelGroupFactory
+    participant ModelGroup
+    participant Plotter
 
-    User ->> NaiveSHAP: initialize(forecaster, background_data, ...)
-    NaiveSHAP ->> ModelGroupFactory: create(forecaster, background_data, feature_names, ...)
-    ModelGroupFactory -->> NaiveSHAP: ModelGroup
+    User ->> NaiveSHAP: __init__(forecaster, test_data, train_data, futr_exog_list, context_data)
+    NaiveSHAP ->> ModelGroupFactory: create(...)
+    ModelGroupFactory -->> NaiveSHAP: ModelGroup instance
 
     User ->> NaiveSHAP: process_explanation()
-    NaiveSHAP ->> NaiveSHAP: _hash_dataframe()
-    alt Cache Miss
+    NaiveSHAP ->> NaiveSHAP: _hash_dataframe(test_data)
+    alt cache miss
         NaiveSHAP ->> NaiveSHAP: shap_values()
-        NaiveSHAP ->> ModelGroup: predict_fn()
+        loop for each subset
+            NaiveSHAP ->> ModelGroup: predict_fn(data)
+        end
     end
-    NaiveSHAP -->> User: SHAP DataFrame
+    NaiveSHAP -->> User: combined SHAP DataFrame
 
-    User ->> NaiveSHAP: explain_single(index)
-    NaiveSHAP -->> User: Feature contributions for one instance
+    User ->> NaiveSHAP: explain_single(model, unique_id, ds)
+    NaiveSHAP -->> User: pd.Series of φ_j
 
     User ->> NaiveSHAP: plot_beeswarm()
-    NaiveSHAP ->> Plotter: beeswarm(shap_df, feature_values)
+    NaiveSHAP ->> Plotter: beeswarm(shap_long, order)
 
-    User ->> NaiveSHAP: plot_waterfall(index)
-    NaiveSHAP ->> Plotter: waterfall(contrib, baseline)
+    User ->> NaiveSHAP: plot_waterfall(model, unique_id, ds, max_display)
+    NaiveSHAP ->> Plotter: waterfall(contrib, baseline, actual, title, max_display)
 
 </mermaid>
