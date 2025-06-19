@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="generator" content="MarkBind 6.0.0">
+    <meta name="generator" content="MarkBind 6.0.1">
     <meta name="viewport" content="width=device-width, initial-scale=1"><title>ARTC SHAP - User Guide</title> <link rel="stylesheet" href="/SHAPDocumentation/markbind/css/bootstrap.min.css"> <link rel="stylesheet" href="/SHAPDocumentation/markbind/fontawesome/css/all.min.css"><link rel="stylesheet" href="/SHAPDocumentation/markbind/css/codeblock-light.min.css"><link rel="stylesheet" href="/SHAPDocumentation/markbind/css/markbind.min.css"><link rel="stylesheet" href="/SHAPDocumentation/plugins/markbind-plugin-anchors/markbind-plugin-anchors.css"><link rel="stylesheet" href="/SHAPDocumentation/plugins/markbind-plugin-tree/markbind-plugin-tree.css">
     
   <link rel="stylesheet" href="/SHAPDocumentation/stylesheets/main.css">
@@ -15,86 +15,89 @@
 <div id="app"><!--[--><header sticky><div data-v-2dc82f13><nav class="navbar navbar-expand-md d-print-none navbar-dark bg-dark" data-v-2dc82f13><div class="container-fluid" data-v-2dc82f13><div class="navbar-left" data-v-2dc82f13><!--[--><a href="/SHAPDocumentation/index.html" title="Home" class="navbar-brand">Your Logo</a><!--]--></div><div class="navbar-default" data-v-2dc82f13><ul class="navbar-nav me-auto mt-2 mt-lg-0" data-v-2dc82f13><!--[--> <li><a href="/SHAPDocumentation/contents/shap.html" class="nav-link">SHAP</a></li> <li><a href="/SHAPDocumentation/contents/userGuide.html" class="nav-link">User Guide</a></li> <li><a href="/SHAPDocumentation/contents/developerGuide.html" class="nav-link">Developer Guide</a></li> <!--]--></ul></div><ul class="navbar-nav navbar-right" data-v-2dc82f13><!--[--><li><form class="navbar-form"><div style="position:relative;" class="dropdown" data-v-00e26d0a><!--[--><input value="" data-bs-toggle="dropdown" type="text" class="form-control" placeholder="Search" autocomplete="off" data-v-00e26d0a><div class="form-control placeholder-div-hidden" data-v-00e26d0a>Search</div><!--]--><ul class="dropdown-menu search-dropdown-menu dropdown-menu-hidden dropdown-menu-end" data-v-00e26d0a><!--[--><!--]--></ul></div></form></li><!--]--></ul></div></nav><div style="display:none;" class="lower-navbar-container" data-v-2dc82f13><!--[--><!----><!----><!--]--></div></div></header> <div id="flex-body"><nav id="site-nav" data-v-6b1b63d2><!--[--><div class="site-nav-top"><div class="fw-bold mb-2" style="font-size:1.25rem;">Contents</div></div> <div class="nav-component slim-scroll"><div class="site-nav-root"><!--[--><ul class="site-nav-list site-nav-list-root" data-v-6b1b63d2><!--[--><li><div class="site-nav-default-list-item site-nav-list-item-0" onclick="handleSiteNavClick(this)"><a href="/SHAPDocumentation/index.html">Home 🏠</a></div></li> <li><div class="site-nav-default-list-item site-nav-list-item-0" onclick="handleSiteNavClick(this)"><a href="/SHAPDocumentation/contents/shap.html">SHAP</a></div></li> <li><div class="site-nav-default-list-item site-nav-list-item-0" onclick="handleSiteNavClick(this)"><a href="/SHAPDocumentation/contents/userGuide.html">User Guide</a></div></li> <li><div class="site-nav-default-list-item site-nav-list-item-0" onclick="handleSiteNavClick(this)"><a href="/SHAPDocumentation/contents/developerGuide.html">Developer Guide</a></div></li><!--]--><!--v-if--></ul><!--]--></div></div><!--]--><!--v-if--></nav> <div id="content-wrapper"><div data-v-ef898034><nav aria-label="breadcrumb" class="breadcrumb-divider" data-v-ef898034><ol class="breadcrumb" data-v-ef898034><li class="notlink breadcrumb-marker" data-v-ef898034> ››   </li><!--[--><!--]--></ol></nav></div> <br> <h1 id="architecture-diagram">Architecture Diagram<a class="fa fa-anchor" href="#architecture-diagram" onclick="event.stopPropagation()"></a></h1> <p><a href="/SHAPDocumentation/src/shap_architecture.png" target="_self"><img src="/SHAPDocumentation/src/shap_architecture.png" alt="SHAP Architecture Diagram" class="img-fluid"></a></p> <h1 id="class-diagram">Class Diagram<a class="fa fa-anchor" href="#class-diagram" onclick="event.stopPropagation()"></a></h1> <pre class="mermaid">classDiagram
 
 class NaiveSHAP {
-+forecaster
--bg_full
-+feature_names_num
--bg_means_num
-+futr_exog_list
--shap_cache
--model_group
-+predict_fn
-+expected_value
-+original_output
--hash_dataframe(df) str
-+shap_values() pd.DataFrame
++forecaster: MLForecast|StatsForecast|NeuralForecast
++futr_exog_list: list
++predict_fn(data: pd.DataFrame) pd.DataFrame
++expected_value: pd.DataFrame
++original_output: pd.DataFrame
 +process_explanation() pd.DataFrame
-+explain_single(index) pd.Series
++explain_single(model: str, unique_id: str, ds: pd.Timestamp) pd.Series
 +plot_beeswarm()
-+plot_waterfall(index, max_display)
++plot_waterfall(model: str, unique_id: str, ds: pd.Timestamp, max_display int)
+-\_shap_cache: dict
+-\_test_data: pd.DataFrame
+-\_bg_means_num: pd.DataFrame
+-\_model_group: ModelGroup
+-\_hash_dataframe(df: pd.DataFrame): str
+-shap_values(): pd.DataFrame
 }
 
 class ModelGroup {
-+predict_fn()\*
-+expected_value() float\*
-+original_output() np.ndarray\*
++predict_fn(data: pd.DataFrame): pd.DataFrame
++expected_value: pd.DataFrame
++original_output: pd.DataFrame
++sample_data_average: pd.DataFrame
 }
 
-class MLForecastGroup {
-+predict_fn()
-+expected_value() float
-+original_output() np.ndarray
+class MLForecastGroup { +(forecaster: MLForecast, train_data: pd.DataFrame, test_data: pd.DataFrame, feature_names: list)
++predict_fn(data: pd.DataFrame): pd.DataFrame
++expected_value: pd.DataFrame
++original_output: pd.DataFrame
++sample_data_average: pd.DataFrame
 }
 
-class NixtlaForecastGroup {
-+predict_fn()
-+expected_value() float
-+original_output() np.ndarray
+class NixtlaForecastGroup { +(forecaster: NeuralForecast|StatsForecast, test_data: pd.DataFrame, train_data: pd.DataFrame, futr_exog_list: list, context_data: pd.DataFrame=None)
++predict_fn(data: pd.DataFrame): pd.DataFrame
++expected_value: pd.DataFrame
++original_output: pd.DataFrame
++sample_data_average: pd.DataFrame
 }
 
 class ModelGroupFactory {
-+create(forecaster, background_data, feature_names, model_key, model_idx) ModelGroup
++create(forecaster, test_data: pd.DataFrame, train_data: pd.DataFrame, feature_names: list, context_data: pd.DataFrame=None) ModelGroup
 }
 
 class Plotter {
-+beeswarm(shap_df, feature_values, title)
-+waterfall(contrib, baseline, title, max_display)
++beeswarm(shap_long: pd.DataFrame, order: list)
++waterfall(contrib: pd.Series, baseline: float, actual: float, title: str, max_display: int)
 }
 
+NaiveSHAP --&gt; ModelGroupFactory
+NaiveSHAP --&gt; Plotter
 MLForecastGroup --|&gt; ModelGroup
 NixtlaForecastGroup --|&gt; ModelGroup
 ModelGroupFactory ..&gt; ModelGroup
-NaiveSHAP --&gt; ModelGroupFactory
-NaiveSHAP --&gt; Plotter
-</pre> <h1 id="sequence-diagram">Sequence Diagram<a class="fa fa-anchor" href="#sequence-diagram" onclick="event.stopPropagation()"></a></h1> <pre class="mermaid">
-sequenceDiagram
-participant User
-participant NaiveSHAP
-participant ModelGroupFactory
-participant ModelGroup
-participant Plotter
+</pre> <h1 id="sequence-diagram">Sequence Diagram<a class="fa fa-anchor" href="#sequence-diagram" onclick="event.stopPropagation()"></a></h1> <pre class="mermaid">sequenceDiagram
+    participant User
+    participant NaiveSHAP
+    participant ModelGroupFactory
+    participant ModelGroup
+    participant Plotter
 
-    User -&gt;&gt; NaiveSHAP: initialize(forecaster, background_data, ...)
-    NaiveSHAP -&gt;&gt; ModelGroupFactory: create(forecaster, background_data, feature_names, ...)
-    ModelGroupFactory --&gt;&gt; NaiveSHAP: ModelGroup
+    User -&gt;&gt; NaiveSHAP: __init__(forecaster, test_data, train_data, futr_exog_list, context_data)
+    NaiveSHAP -&gt;&gt; ModelGroupFactory: create(...)
+    ModelGroupFactory --&gt;&gt; NaiveSHAP: ModelGroup instance
 
     User -&gt;&gt; NaiveSHAP: process_explanation()
-    NaiveSHAP -&gt;&gt; NaiveSHAP: _hash_dataframe()
-    alt Cache Miss
+    NaiveSHAP -&gt;&gt; NaiveSHAP: _hash_dataframe(test_data)
+    alt cache miss
         NaiveSHAP -&gt;&gt; NaiveSHAP: shap_values()
-        NaiveSHAP -&gt;&gt; ModelGroup: predict_fn()
+        loop for each subset
+            NaiveSHAP -&gt;&gt; ModelGroup: predict_fn(data)
+        end
     end
-    NaiveSHAP --&gt;&gt; User: SHAP DataFrame
+    NaiveSHAP --&gt;&gt; User: combined SHAP DataFrame
 
-    User -&gt;&gt; NaiveSHAP: explain_single(index)
-    NaiveSHAP --&gt;&gt; User: Feature contributions for one instance
+    User -&gt;&gt; NaiveSHAP: explain_single(model, unique_id, ds)
+    NaiveSHAP --&gt;&gt; User: pd.Series of φ_j
 
     User -&gt;&gt; NaiveSHAP: plot_beeswarm()
-    NaiveSHAP -&gt;&gt; Plotter: beeswarm(shap_df, feature_values)
+    NaiveSHAP -&gt;&gt; Plotter: beeswarm(shap_long, order)
 
-    User -&gt;&gt; NaiveSHAP: plot_waterfall(index)
-    NaiveSHAP -&gt;&gt; Plotter: waterfall(contrib, baseline)
+    User -&gt;&gt; NaiveSHAP: plot_waterfall(model, unique_id, ds, max_display)
+    NaiveSHAP -&gt;&gt; Plotter: waterfall(contrib, baseline, actual, title, max_display)
 
-</pre></div> <nav id="page-nav" data-v-6b1b63d2><!--[--><div class="nav-component slim-scroll"><nav id="mb-page-nav" class="nav nav-pills flex-column my-0 small no-flex-wrap" data-v-6b1b63d2><!--[--><a class="nav-link py-1" href="#architecture-diagram">Architecture Diagram‎</a> <a class="nav-link py-1" href="#class-diagram">Class Diagram‎</a> <a class="nav-link py-1" href="#sequence-diagram">Sequence Diagram‎</a><!--]--><!--v-if--></nav></div><!--]--><!--v-if--></nav> <div class="scroll-top-button fa-lg d-print-none" style="display:none;bottom:2%;right:2%;position:fixed;" aria-hidden="true"><!--[--><i class="fas fa-arrow-circle-up"></i><!--]--></div></div> <footer><div class="text-center"><small>[Generated by <a href="https://markbind.org/">MarkBind 6.0.0</a>]</small></div></footer><!--]--></div>
+</pre></div> <nav id="page-nav" data-v-6b1b63d2><!--[--><div class="nav-component slim-scroll"><nav id="mb-page-nav" class="nav nav-pills flex-column my-0 small no-flex-wrap" data-v-6b1b63d2><!--[--><a class="nav-link py-1" href="#architecture-diagram">Architecture Diagram‎</a> <a class="nav-link py-1" href="#class-diagram">Class Diagram‎</a> <a class="nav-link py-1" href="#sequence-diagram">Sequence Diagram‎</a><!--]--><!--v-if--></nav></div><!--]--><!--v-if--></nav> <div class="scroll-top-button fa-lg d-print-none" style="display:none;bottom:2%;right:2%;position:fixed;" aria-hidden="true"><!--[--><i class="fas fa-arrow-circle-up"></i><!--]--></div></div> <footer><div class="text-center"><small>[Generated by <a href="https://markbind.org/">MarkBind 6.0.1</a>]</small></div></footer><!--]--></div>
 </body><script src="/SHAPDocumentation/markbind/js/bootstrap-utility.min.js"></script>
 <script src="/SHAPDocumentation/markbind/js/polyfill.min.js"></script>
 <script src="/SHAPDocumentation/markbind/js/vue.global.prod.min.js"></script>

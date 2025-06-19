@@ -44,7 +44,7 @@
         "naiveshap-class-documentation": "NaiveSHAP Class Documentation",
         "overview": "Overview",
         "constructor-function Object() { [native code] }": "Constructor",
-        "methods": "Methods",
+        "public-methods": "Public Methods",
         "notes": "Notes"
       },
       "headingKeywords": {}
@@ -57,7 +57,6 @@
         "project-objective": "Project Objective",
         "project-results": "Project Results",
         "benchmark-testing": "Benchmark Testing",
-        "sanity-check": "Sanity Check",
         "future-work": "Future Work"
       },
       "headingKeywords": {}
